@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "zezclient",
+  "version": "0.3.0",
+  "name": "ZezCraft Client",
+  "description": "ZezCraft 服务器增强：任意按键与长按检测、本地流畅枪械动画、自定义 HUD、第三人称持枪动作",
+  "authors": [
+    "ZezCraft"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.zezcraft.client.ZezClient"
+    ]
+  },
+  "mixins": [
+    "zezclient.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "~26.1",
+    "fabric-api": "*"
+  },
+  "contact": {
+    "homepage": "https://zezcraft.com/developers/docs/zezclient"
+  }
+}
