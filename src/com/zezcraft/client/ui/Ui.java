@@ -109,9 +109,11 @@ public final class Ui {
                 }
                 e.hover = p.hover; e.wasOver = p.wasOver;
             });
+            E was = focus;
             focus = null;
             n.root.each(e -> { if (e.focus && e.type.equals("input")) focus = e; });
             d = n;
+            if ((was == null) != (focus == null)) { ime = null; minecraft.onTextInputFocusChange(this, focus != null); }
         }
 
         String fill(String a) {
@@ -142,10 +144,27 @@ public final class Ui {
             if (raw.equals("close")) onClose();
         }
 
+        net.minecraft.client.gui.components.IMEPreeditOverlay ime;
+
         void setFocus(E e) {
             if (focus != null) focus.focus = false;
             focus = e;
             if (e != null) e.focus = true;
+            ime = null;
+            if (minecraft != null) minecraft.onTextInputFocusChange(this, e != null);
+        }
+
+        @Override
+        protected void init() {
+            super.init();
+            if (focus != null) minecraft.onTextInputFocusChange(this, true);
+        }
+
+        @Override
+        public boolean preeditUpdated(net.minecraft.client.input.PreeditEvent ev) {
+            if (focus == null) return false;
+            ime = ev == null || ev.fullText().isEmpty() ? null : new net.minecraft.client.gui.components.IMEPreeditOverlay(ev, font, 9);
+            return true;
         }
 
         @Override
@@ -161,6 +180,7 @@ public final class Ui {
         public boolean keyPressed(KeyEvent ev) {
             if (focus != null) {
                 int k = ev.key();
+                if (ime != null && (k == 259 || k == 257 || k == 335)) return true;
                 if (k == 259) {
                     String v = focus.val;
                     if (ev.hasControlDown()) focus.val = "";
@@ -199,6 +219,10 @@ public final class Ui {
             super.extractRenderState(g, mx, my, pt);
             tip.clear();
             d.draw(g, width, height, mx, my, tip);
+            if (ime != null && focus != null) {
+                ime.updateInputPosition(Math.round(focus.cx * d.z), Math.round(focus.cy * d.z));
+                ime.extractRenderState(g, mx, my, pt);
+            }
             if (!tip.isEmpty()) {
                 List<Component> l = new ArrayList<>();
                 for (String s : tip) l.add(Component.literal(s));
@@ -224,6 +248,7 @@ public final class Ui {
 
         @Override
         public void removed() {
+            if (focus != null) minecraft.onTextInputFocusChange(this, false);
             if (!silent) onClose.accept(d.id);
         }
     }

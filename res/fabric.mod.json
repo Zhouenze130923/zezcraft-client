@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "zezclient",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "name": "ZezCraft Client",
   "description": "ZezCraft 服务器增强：任意按键与长按检测、本地流畅枪械动画、自定义 HUD、第三人称持枪动作",
   "authors": [

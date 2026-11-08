@@ -27,6 +27,7 @@ public final class E {
     public long popAt;
     Object stack;
     public int w0, h0;
+    public int cx, cy;
 
     static int col(JsonObject o, String k, int d) {
         if (!o.has(k)) return d;

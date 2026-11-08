@@ -395,8 +395,9 @@ public final class R {
         g.enableScissor(x + 2, y, x + w - 2, y + h);
         int ty = y + (h - 8) / 2;
         g.text(f, shown, x + 4, ty, alpha(ph ? 0xFF6A6A6A : e.color, a), !ph);
+        e.cx = x + 4 + (ph ? 0 : f.width(shown)); e.cy = ty - 1;
         if (e.focus && (System.currentTimeMillis() / 450) % 2 == 0) {
-            int cx = x + 4 + (ph ? 0 : f.width(shown));
+            int cx = e.cx;
             g.fill(cx, ty - 1, cx + 1, ty + 9, alpha(0xFFD0D0D0, a));
         }
         g.disableScissor();
